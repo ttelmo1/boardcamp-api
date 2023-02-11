@@ -1,14 +1,12 @@
 import { db } from "../database/database.connection.js";
 
-
 export async function getGames(req, res) {
     try{
-        const result = await db.query('SELECT * FROM games');
-        res.send(result.rows);
+        const games = await db.query('SELECT * FROM games');
+        res.send(games.rows);
     }
     catch(err){
         res.sendStatus(500);
-        console.log(err);
     }
 }
 
@@ -21,11 +19,11 @@ export async function postGame(req, res) {
       if (gameExists.rowCount > 0) {
         return res.sendStatus(409);
       }
-      const result = await db.query(
+      const games = await db.query(
         'INSERT INTO games (name, image, "stockTotal", "pricePerDay") VALUES ($1, $2, $3, $4)',
         [name, image, stockTotal, pricePerDay]
       );
-      if (result.rowCount === 0) {
+      if (games.rowCount === 0) {
         return res.sendStatus(400);
       }
       res.sendStatus(201);
