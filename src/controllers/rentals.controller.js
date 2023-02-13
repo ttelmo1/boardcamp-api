@@ -16,7 +16,7 @@ export async function postRentals(req, res){
     }
 
     const isGameRented = await db.query('SELECT * FROM rentals WHERE "gameId" = $1', [gameId]);
-    if(isGameRented === gameExists.rows[0].stockTotal){
+    if(isGameRented.rowCount === gameExists.rows[0].stockTotal){
         return res.sendStatus(400);
     }
 
@@ -80,7 +80,10 @@ export async function finishRental(req, res){
         const rental = thisRentalExists.rows[0];
         let delayFee = 0;
         let today = dayjs().format("YYYY-MM-DD");
-        const daysWithGame = dayjs(today).diff(rental.rentDate, "day");
+        let rentDateToDayjs = dayjs(rental.rentDate);
+        const daysWithGame = dayjs(today).diff(rentDateToDayjs, "day");
+
+        // const daysWithGame = dayjs(today).diff(rental.rentDate, "day");
         if(daysWithGame > rental.daysRented){
             delayFee = (daysWithGame - rental.daysRented) * rental.originalPrice;
         }
