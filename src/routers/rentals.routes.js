@@ -9,6 +9,6 @@ const rental = Router();
 rental.get("/", getRentals);
 rental.post("/", validateSchema(postRentalSchema), postRentals);
 rental.post("/:id/return", finishRental);
-rental.delete("/id", deleteRental)
+rental.delete("/:id", deleteRental)
 
 export default rental;
