@@ -108,7 +108,7 @@ export async function finishRental(req, res){
 export async function deleteRental(req, res){
     const id = Number(req.params.id);
     if(!id || id < 0 || !Number.isSafeInteger(id)){
-        return res.sendStatus(400);
+        return res.sendStatus(400);  
     }
 
     try{
@@ -118,7 +118,8 @@ export async function deleteRental(req, res){
         }
 
         const thisRentalHasFinished = await db.query('SELECT * FROM rentals WHERE id = $1 AND "returnDate" IS NOT NULL', [id]);
-        if(thisRentalHasFinished.rowCount !== 0){
+        if(thisRentalHasFinished.rowCount !== 1){
+            console.log("aqui");
             return res.sendStatus(400);
         }
 
