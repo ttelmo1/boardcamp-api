@@ -75,4 +75,3 @@ export async function putCustomer(req, res) {
         res.sendStatus(500);
     }
 }
-
