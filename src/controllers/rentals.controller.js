@@ -82,10 +82,10 @@ export async function finishRental(req, res){
         let today = dayjs().format("YYYY-MM-DD");
         let rentDateToDayjs = dayjs(rental.rentDate);
         let daysRentedToDayjs = dayjs(rental.daysRented);
-        const daysWithGame = dayjs(today, "day").diff(rentDateToDayjs, "day");
+        const daysWithGame = dayjs(today).diff(rentDateToDayjs, "day");
 
         if(daysWithGame > daysRentedToDayjs){
-            delayFee = (daysWithGame - daysRentedToDayjs) * rental.originalPrice;
+            delayFee = (daysWithGame - daysRentedToDayjs) * (rental.originalPrice / rental.daysRented);
         }
 
         await db.query(
